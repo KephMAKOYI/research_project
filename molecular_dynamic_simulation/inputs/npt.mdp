@@ -1,0 +1,56 @@
+title                   = AMBER99SB-ILDN Mitofusin 2 NPT equilibration[cite: 3]
+define                  = -DPOSRES  ; position restrain the protein[cite: 3]
+; Run parameters
+integrator              = md        ; leap-frog integrator[cite: 3]
+nsteps                  = 250000    ; 2 * 250000 = 500 ps[cite: 3]
+dt                      = 0.002     ; 2 fs[cite: 3]
+
+; Output control (Ajusté pour éviter de saturer le disque dur)
+nstxout                 = 5000      ; save coordinates every 10 ps (1.0 ps génère des fichiers inutilement lourds en équilibration)
+nstvout                 = 5000      ; save velocities every 10 ps
+nstenergy               = 1000      ; save energies every 2 ps
+nstlog                  = 1000      ; update log file every 2 ps
+
+; Bond parameters
+continuation            = yes       ; Restarting after NVT[cite: 3]
+constraint_algorithm    = lincs     ; holonomic constraints[cite: 3]
+constraints             = h-bonds   ; bonds involving H are constrained[cite: 3]
+lincs_iter              = 1         ; accuracy of LINCS[cite: 3]
+lincs_order             = 4         ; also related to accuracy[cite: 3]
+
+; Neighbor searching (Optimisé pour GPU / Verlet)
+cutoff-scheme           = Verlet    ; Buffered neighbor searching[cite: 3]
+ns_type                 = grid      ; search neighboring grid cells[cite: 3]
+nstlist                 = 20        ; Augmenté à 20 pour de meilleures performances avec Verlet (GPU)
+
+; Electrostatics & vdW (Ajustements convention AMBER)
+coulombtype             = PME       ; Particle Mesh Ewald for long-range electrostatics[cite: 3]
+rcoulomb                = 1.0       ; Cutoff standard de 1.0 nm pour AMBER (cohérent avec NVT)
+pme_order               = 4         ; cubic interpolation[cite: 3]
+fourierspacing          = 0.12      ; Grid spacing plus fin (0.12 nm) recommandé pour la précision PME
+
+; vdW (Spécifications convention AMBER99SB-ILDN)
+vdwtype                 = Cut-off
+rvdw                    = 1.0       ; Cutoff standard de 1.0 nm pour AMBER (doit être égal à rcoulomb)
+DispCorr                = EnerPres  ; Correction de dispersion recommandée à la fois pour l'énergie et la pression
+vdw-modifier            = Potential-shift ; Shift pour amener l'énergie à 0 au cutoff (mieux adapté à AMBER)
+
+; Temperature coupling (Séparation des groupes essentielle)
+tcoupl                  = V-rescale ; stochastic Bussi thermostat[cite: 3]
+tc-grps                 = Protein Non-Protein ; SÉPARATION INDISPENSABLE pour éviter l'effet "hot solvent"
+tau_t                   = 0.1   0.1 ; Constante de temps de 0.1 ps (standard pour une régulation thermique efficace)
+ref_t                   = 298   298 ; Température cible[cite: 3]
+
+; Pressure coupling is on
+pcoupl                  = C-rescale ; stochastic cell rescaling barostat (excellent compromis stabilité/physique)[cite: 3]
+pcoupltype              = isotropic             ; uniform scaling of box vectors[cite: 3]
+tau_p                   = 2.0                   ; Réduit à 2.0 ps (recommandé pour C-rescale/Parrinello-Rahman en NPT)
+ref_p                   = 1.0                   ; reference pressure, in bar[cite: 3]
+compressibility         = 4.5e-5                ; isothermal compressibility of water, bar^-1[cite: 3]
+refcoord_scaling        = com                   ; scale center of mass of reference coordinates[cite: 3]
+
+; Periodic boundary conditions
+pbc                     = xyz       ; 3-D PBC[cite: 3]
+
+; Velocity generation
+gen_vel                 = no        ; Velocity generation is off (on conserve les vitesses de la phase NVT)[cite: 3]

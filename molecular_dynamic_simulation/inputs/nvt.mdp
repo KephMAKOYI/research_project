@@ -1,0 +1,53 @@
+title                   = AMBER99SB-ILDN Mitofusin 2 NVT equilibration 
+define                  = -DPOSRES  ; position restrain the protein
+; Run parameters
+integrator              = md        ; leap-frog integrator
+nsteps                  = 50000     ; 2 * 50000 = 100 ps
+dt                      = 0.002     ; 2 fs
+
+; Output control
+nstxout                 = 5000      ; save coordinates every 10 ps (réduit pour alléger les fichiers d'équilibration)
+nstvout                 = 5000      ; save velocities every 10 ps
+nstenergy               = 1000      ; save energies every 2 ps (utile pour surveiller la température précisément)
+nstlog                  = 1000      ; update log file every 2 ps
+
+; Bond parameters
+continuation            = no        ; first dynamics run
+constraint_algorithm    = lincs     ; holonomic constraints 
+constraints             = h-bonds   ; bonds involving H are constrained
+lincs_iter              = 1         ; accuracy of LINCS
+lincs_order             = 4         ; also related to accuracy
+
+; Neighbor searching (Optimisé pour GPU / Verlet)
+cutoff-scheme           = Verlet    ; Buffered neighbor searching
+ns_type                 = grid      ; search neighboring grid cells
+nstlist                 = 20        ; Augmenté à 20 pour une meilleure performance avec le cutoff-scheme Verlet (GPU)
+
+; Electrostatics & vdW (Ajustements convention AMBER)
+coulombtype             = PME       ; Particle Mesh Ewald for long-range electrostatics
+rcoulomb                = 1.0       ; Cutoff standard recommandé de 1.0 nm pour AMBER
+pme_order               = 4         ; cubic interpolation
+fourierspacing          = 0.12      ; Grid spacing plus fin (0.12 nm) recommandé pour une meilleure précision PME
+
+; vdW (Spécifications convention AMBER99SB-ILDN)
+vdwtype                 = Cut-off   ; Pas de force-switch pour AMBER standard (sauf cas très particuliers de lipides)
+rvdw                    = 1.0       ; Cutoff standard recommandé de 1.0 nm pour AMBER (doit être égal à rcoulomb)
+DispCorr                = EnerPres  ; "EnerPres" ou "No". Pour AMBER, EnerPres est souvent préféré pour corriger la dispersion à longue distance
+vdw-modifier            = Potential-shift ; Shift pour amener l'énergie à 0 au cutoff (mieux adapté à AMBER sous GROMACS)
+
+; Temperature coupling (Séparation des groupes recommandée)
+tcoupl                  = V-rescale ; stochastic Bussi thermostat 
+tc-grps                 = Protein Non-Protein ; SÉPARATION INDISPENSABLE pour éviter l'effet "hot solvent" (remplace "System")
+tau_t                   = 0.1   0.1 ; Constante de temps plus rapide (0.1 ps) recommandée pour une équilibration NVT efficace
+ref_t                   = 298   298 ; Température cible pour chaque groupe
+
+; Pressure coupling is off
+pcoupl                  = no        ; no pressure coupling in NVT
+
+; Periodic boundary conditions
+pbc                     = xyz       ; 3-D PBC
+
+; Velocity generation
+gen_vel                 = yes       ; assign velocities from Maxwell distribution
+gen_temp                = 298       ; temperature for Maxwell distribution
+gen_seed                = -1        ; generate a random seed

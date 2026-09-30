@@ -1,0 +1,6 @@
+sample,lane,fastq_1,fastq_2
+ARDI0052110231,L003,/cbio/users/kmakoyi/datas/f3/1/22KC2NLT4-3-IDUDI0039_S39_L003_R1_001.fastq.gz,/cbio/users/kmakoyi/datas/f3/1/22KC2NLT4-3-IDUDI0039_S39_L003_R2_001.fastq.gz
+ARDI0052110231,L004,/cbio/users/kmakoyi/datas/f3/1/22KC2NLT4-4-IDUDI0039_S55_L004_R1_001.fastq.gz,/cbio/users/kmakoyi/datas/f3/1/22KC2NLT4-4-IDUDI0039_S55_L004_R2_001.fastq.gz
+ARDI0052110233,L003,/cbio/users/kmakoyi/datas/f3/3/22KC2NLT4-3-IDUDI0041_S41_L003_R1_001.fastq.gz,/cbio/users/kmakoyi/datas/f3/3/22KC2NLT4-3-IDUDI0041_S41_L003_R2_001.fastq.gz
+ARDI0052110233,L004,/cbio/users/kmakoyi/datas/f3/3/22KC2NLT4-4-IDUDI0041_S57_L004_R1_001.fastq.gz,/cbio/users/kmakoyi/datas/f3/3/22KC2NLT4-4-IDUDI0041_S57_L004_R2_001.fastq.gz
+
