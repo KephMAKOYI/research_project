@@ -9,11 +9,7 @@ This repository contains an end-to-end Nextflow workflow and MD simulation suite
 2. Integrating ensemble machine learning pathogenicity tools (AlphaMissense, CADD, REVEL, etc.).
 3. Utilizing biophysical molecular dynamics simulations to evaluate structural impacts on candidate proteins.
 
-![Pipeline Workflow](docs/assets/readme_.png)
-
-       ┌─── GRCh38 (BWA) ─────────► GATK / DeepVariant ─────┐
-FASTQ ─┤                                                    ├─► VCF Annotation & MD Simulations
-       └─── African Pangenome (vg) ──► GATK / DeepVariant ──┘
+![Pipeline Workflow](docs/assets/pipeline_workflow.PNG)
 
 ### Research Objectives
 * Improved variant detection: Integrate the African pangenome graph into standard NGS workflows to enhance variant call precision in underrepresented populations.
@@ -32,29 +28,7 @@ FASTQ ─┤                                                    ├─► VCF An
 
 ### Repository Structure
 
-.
-├── docs/
-│   └── assets/                # README figures and visual assets
-│       └── pipeline_workflow.png
-├── ngs_variant_calling/
-│   ├── main/                  # Core Nextflow pipeline (FastQC to Variant Calling)
-│   │   ├── main.nf
-│   │   ├── nextflow.config
-│   │   └── nextflow.sh
-│   ├── hc/                    # GATK pipeline scripts (CombineGVCFs, GenotypeGVCFs, Annotation)
-│   ├── dv/                    # DeepVariant downstream handling & annotation
-│   └── multiqc_report/        # QC, mapping, and variant calling summary metrics
-│
-└── molecular_dynamic_simulation/
-    ├── 6JFK_MFN2_wT.sh        # MD execution script for Wild-Type structure
-    ├── 6JFK_MFN2_mT.sh        # MD execution script for Mutant structure
-    ├── inputs/                # GROMACS MDP configurations
-    │   ├── ions.mdp           # System neutralization
-    │   ├── minim.mdp          # Energy minimization
-    │   ├── nvt.mdp            # NVT equilibration
-    │   ├── npt.mdp            # NPT equilibration
-    │   └── md.mdp             # Production MD simulation
-    └── plots/                 # Trajectory analysis (RMSD, RMSF, Hbonds, Rg, SASA, DSSP)
+![Pipeline Workflow](docs/assets/repository_structure.PNG)
 
 ### Getting Started
 
