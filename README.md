@@ -13,7 +13,7 @@ This repository contains an end-to-end Nextflow workflow and MD simulation suite
 
 ### Research Objectives
 * Improved variant detection: Integrate the African pangenome graph into standard NGS workflows to enhance variant call precision in underrepresented populations.
-* Improved variant Reclassification: Leverage machine learning ensemble scores and atomistic molecular dynamics to resolve Variants of Uncertain Significance (VUS).
+* Improved variant classification: Leverage machine learning ensemble scores and atomistic molecular dynamics to resolve Variants of Uncertain Significance (VUS).
 
 ### Methodology
 
@@ -41,15 +41,15 @@ Prerequisites
 ### Execution Example
 
 To run the full NGS variant calling pipeline on a Slurm cluster:
-
+```bash
 cd ngs_variant_calling/main
 sbatch nextflow.sh
-
+```
 To run a molecular dynamics simulation for a mutant protein structure:
-
+```bash
 cd molecular_dynamic_simulation
 bash 6JFK_MFN2_mT.sh
-
+```
 ### Ethical Considerations
 
 * Confidentiality & Security: All human genomic data were processed under strict security protocols on the Ilifu HPC platform.
